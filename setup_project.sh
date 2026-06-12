@@ -36,6 +36,9 @@ setup_directories(){
 
 	mkdir -p "$parent_dir"/{Helpers,reports}
 	
+	cp "$(dirname "$0")/config.json" "$parent_dir/Helpers/config.json"
+	cp "$(dirname "$0")/assets.csv" "$parent_dir/Helpers/assets.csv"	
+	
 	if [ $? -ne 0 ]; then
 		echo "[ERROR] Failed to create directories. Check write permissions."
 		exit 1
@@ -43,10 +46,10 @@ setup_directories(){
 
 	cat << 'EOF' >"$parent_dir/attendance_checker.py"
 	print("Attendance Checker Main Logic Running...")
-	EOF
+EOF
 	cat << 'EOF'>"$parent_dir/reports/reports.log"
 	[INFO] System initialized.
-	EOF
+EOF
 	
 	echo "[SUCCESS] Directory structure successfully provisioned."
 }
@@ -82,9 +85,9 @@ update_config(){
 
 		echo "[CONFIG] Updating config.json values dynamically..."
 		
-		sed -i "s/\"warning_threshold\": .*/\"warning_threshold\":$warning_input,/g" "$parent_dir/Helpers/config.json"
+		sed -i '' "s/\"warning\": .*/\"warning\":$warning_input,/g" "$parent_dir/Helpers/config.json"
 		
-		sed -i "s/\"failure_threshold\": .*/\"failure_threshold\": $failure_input/g" "$parent_dir/Helpers/config.json"
+		sed -i '' "s/\"failure\": .*/\"failure\": $failure_input/g" "$parent_dir/Helpers/config.json"
 
 		echo "[SUCCESS] Updated config.json content:"
 		cat "$parent_dir/Helpers/config.json"
