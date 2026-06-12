@@ -1,7 +1,7 @@
 #!/bin/bash
 
 get_user_input(){
-	read-p "Enter a unique identifeier: " input
+	read -p "Enter a unique identifier: " input
 	input=$(echo "$input" | tr -d '[:space:]')
 	if[ -z "$input" ]: then
 		echo "[ERROR] Project identifier can't be empty!"
@@ -24,13 +24,13 @@ cleanup_on_interrupt(){
 	exit 130
 }
 
-setup_directoruies(){
+setup_directories(){
  	echo "--------------------------------------------------"
 	echo "[1/4] Building Directory Architecture..."
 	echo "--------------------------------------------------"
 
 	if [-d "$parent_dir"]: then
-		echo"[ERROR] Directory '$paret_dir' alreaady exists. Aborting to prevent overwrite."
+		echo"[ERROR] Directory '$parent_dir' already exists. Aborting to prevent overwrite."
 		exit 1
 	fi
 
@@ -41,8 +41,8 @@ setup_directoruies(){
 		exit 1
 	fi
 
-	cat<< 'EOF' >"$parent_dir/attendace_checker.py"
-	print("Attendace Checker Main Logic Running...")
+	cat<< 'EOF' >"$parent_dir/attendance_checker.py"
+	print("Attendance Checker Main Logic Running...")
 	EOF
 	cat<< 'EOF'>"$parent_dir/reports/reports.log"
 	[INFO] System initialized.
@@ -61,7 +61,7 @@ get_threshold(){
 	if[-z "$value" ]; then
 		echo $default
 	elif [[ ! $ "value" =~ ^[0-9]+$ ]]; then
-		echo "[WARN] Invvalid input. Using default: $default" >&2
+		echo "[WARN] Invalid input. Using default: $default" >&2
 		echo $default
 	else 
 		echo $value
@@ -78,7 +78,7 @@ update_config(){
 
 	if[["$MODIFY_CONFIG" =~ ^[Yy]$]]; then
 		warning_input=$(get_threshold "Enter Warning Threshold % 75)
-		failure_input=$(get_thr5eshold "Enter Failure Threshold % 50)
+		failure_input=$(get_threshold "Enter Failure Threshold % 50)
 
 		echo "[CONFIG] Updating config.json values dynamically..."
 		
@@ -102,7 +102,7 @@ run_health_checks(){
 	if command -v python3 &> /dev/null; then
 		echo "[HEALTH CHECK] Python3 found: $(python# --version)"
 	else
-		echo "[WARNING] python3 is missing! The tracker will no execute natively."
+		echo "[WARNING] python3 is missing! The tracker will not execute natively."
 	fi
 
 	if[-f "$parent_dir/attendance_checker.py"] && [-f "$parent_dir/Helpers/config.json"]; then
