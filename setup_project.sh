@@ -3,7 +3,7 @@
 get_user_input(){
 	read -p "Enter a unique identifier: " input
 	input=$(echo "$input" | tr -d '[:space:]')
-	if[ -z "$input" ]: then
+	if [ -z "$input" ]; then
 		echo "[ERROR] Project identifier can't be empty!"
 		exit 1
 	fi
@@ -12,9 +12,9 @@ get_user_input(){
 cleanup_on_interrupt(){
 	echo -e "\n\n[INTERRUPT DETECTED] Script cancelled by user (SIGINT)."
 	
-	if[ -d "$parent_dir"]; then
+	if [ -d "$parent_dir" ]; then
 		echo "[CLEANUP] Packaging currennt incomplete state into $archive_name..."
-		tar -czf "archive_name" "$parent_dir" 2>/dev/null
+		tar -czf "$archive_name" "$parent_dir" 2>/dev/null
 
 		echo "[CLEANUP] Removing incomplete directory to keep workspace clean..."
 		rm -rf "$parent_dir" 
@@ -29,26 +29,26 @@ setup_directories(){
 	echo "[1/4] Building Directory Architecture..."
 	echo "--------------------------------------------------"
 
-	if [-d "$parent_dir"]: then
-		echo"[ERROR] Directory '$parent_dir' already exists. Aborting to prevent overwrite."
+	if [ -d "$parent_dir" ]; then
+		echo "[ERROR] Directory '$parent_dir' already exists. Aborting to prevent overwrite."
 		exit 1
 	fi
 
-	mkdir -p "$parent_dir" /{Helpers, reports}
+	mkdir -p "$parent_dir"/{Helpers,reports}
 	
-	if [$? -ne 0 ]: then
+	if [ $? -ne 0 ]; then
 		echo "[ERROR] Failed to create directories. Check write permissions."
 		exit 1
 	fi
 
-	cat<< 'EOF' >"$parent_dir/attendance_checker.py"
+	cat << 'EOF' >"$parent_dir/attendance_checker.py"
 	print("Attendance Checker Main Logic Running...")
 	EOF
-	cat<< 'EOF'>"$parent_dir/reports/reports.log"
+	cat << 'EOF'>"$parent_dir/reports/reports.log"
 	[INFO] System initialized.
 	EOF
 	
-	echo "[SUCCESS]" Directory structure successfully provisioned."
+	echo "[SUCCESS] Directory structure successfully provisioned."
 }
 
 get_threshold(){
@@ -58,9 +58,9 @@ get_threshold(){
 
 	read -p "$prompt (Default): " value
 
-	if[-z "$value" ]; then
+	if [ -z "$value" ]; then
 		echo $default
-	elif [[ ! $ "value" =~ ^[0-9]+$ ]]; then
+	elif [[ !  "$value" =~ ^[0-9]+$ ]]; then
 		echo "[WARN] Invalid input. Using default: $default" >&2
 		echo $default
 	else 
@@ -76,15 +76,15 @@ update_config(){
 
 	read -p "Do you want to update the attendance thresholds? y/N): " MODIFY_CONFIG
 
-	if[["$MODIFY_CONFIG" =~ ^[Yy]$]]; then
-		warning_input=$(get_threshold "Enter Warning Threshold % 75)
-		failure_input=$(get_threshold "Enter Failure Threshold % 50)
+	if [[ "$MODIFY_CONFIG" =~ ^[Yy]$ ]]; then
+		warning_input=$(get_threshold "Enter Warning Threshold %" 75)
+		failure_input=$(get_threshold "Enter Failure Threshold %" 50)
 
 		echo "[CONFIG] Updating config.json values dynamically..."
 		
 		sed -i "s/\"warning_threshold\": .*/\"warning_threshold\":$warning_input,/g" "$parent_dir/Helpers/config.json"
 		
-		sed -i "s/\"failure_threshold\": .*/\failure_threshold\": $failure_input/g" "_parent_dir/Helpers/config.json"
+		sed -i "s/\"failure_threshold\": .*/\"failure_threshold\": $failure_input/g" "$parent_dir/Helpers/config.json"
 
 		echo "[SUCCESS] Updated config.json content:"
 		cat "$parent_dir/Helpers/config.json"
@@ -95,17 +95,17 @@ update_config(){
 
 
 run_health_checks(){
-	echo -e "echo -e "\n--------------------------------------------------"
+	echo -e "\n--------------------------------------------------"
 	echo "[3/4] Running System Health Checks..."
 	echo "--------------------------------------------------"
 	
 	if command -v python3 &> /dev/null; then
-		echo "[HEALTH CHECK] Python3 found: $(python# --version)"
+		echo "[HEALTH CHECK] Python3 found: $(python3 --version)"
 	else
 		echo "[WARNING] python3 is missing! The tracker will not execute natively."
 	fi
 
-	if[-f "$parent_dir/attendance_checker.py"] && [-f "$parent_dir/Helpers/config.json"]; then
+	if [ -f "$parent_dir/attendance_checker.py" ] && [ -f "$parent_dir/Helpers/config.json" ]; then
 		echo "[HEALTH CHECK] Directory structure validation: PASSED"
 	else
 		echo "[HEALTH CHECK] Director structure validation: FAILED"
@@ -118,7 +118,7 @@ final(){
 	echo "[4/4] Finalizing Environment"
 	echo "--------------------------------------------------"
 	echo "[SUCCESS] Project Factory complete!"
-	echo "Your workspace is ready at: ./$PARENT_DIR"
+	echo "Your workspace is ready at: ./$parent_dir"
 }
 
 get_user_input
