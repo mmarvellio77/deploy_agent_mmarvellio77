@@ -37,7 +37,8 @@ setup_directories(){
 	mkdir -p "$parent_dir"/{Helpers,reports}
 	
 	cp "$(dirname "$0")/config.json" "$parent_dir/Helpers/config.json"
-	cp "$(dirname "$0")/assets.csv" "$parent_dir/Helpers/assets.csv"	
+	cp "$(dirname "$0")/assets.csv" "$parent_dir/Helpers/assets.csv"
+	cp "$(dirname "$0")/attendance_checker.py" "$parent_dir/attendance_checker.py"	
 	
 	if [ $? -ne 0 ]; then
 		echo "[ERROR] Failed to create directories. Check write permissions."
