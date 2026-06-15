@@ -45,9 +45,7 @@ setup_directories(){
 		exit 1
 	fi
 
-	cat << 'EOF' >"$parent_dir/attendance_checker.py"
-	print("Attendance Checker Main Logic Running...")
-EOF
+
 	cat << 'EOF'>"$parent_dir/reports/reports.log"
 	[INFO] System initialized.
 EOF
