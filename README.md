@@ -24,6 +24,8 @@ cd deploy_agent_mmarvellio77
 
 # 2. Make the script executable
 chmod +x setup_project.sh
+# Note: all source files (attendance_checker.py, assets.csv, config.json, reports.log)
+# are generated automatically by the script — no need to download them separately
 
 # 3. Run it
 ./setup_project.sh
